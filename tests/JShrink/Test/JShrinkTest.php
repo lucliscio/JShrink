@@ -32,10 +32,17 @@ class JShrinkTest extends \PHPUnit\Framework\TestCase
     public function testUnclosedRegexException()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage("Unclosed regex pattern at position: 23");
-        \JShrink\Minifier::minify('var re = /[^A-Za-z0-9_
+        $this->expectExceptionMessage("Unclosed regex pattern at position: 24");
+        \JShrink\Minifier::minify('var re = /[^A-Za-z0-9_]
         var string = "Another Filler"');
     }
+
+   public function testUnclosedCharacterClassException()
+   {
+       $this->expectException(\RuntimeException::class);
+       $this->expectExceptionMessage("Unclosed character class at position: 11");
+       \JShrink\Minifier::minify('var re = /[abc/; var string = "Another Filler"');
+   }
 
     /**
      * @jshrink
